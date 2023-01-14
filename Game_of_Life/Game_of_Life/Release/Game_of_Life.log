@@ -1,0 +1,35 @@
+﻿  Source.c
+C:\Users\Егор\source\repos\Game_of_Life\Game_of_Life\Source.c(116,8): warning C4013: time: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\Егор\source\repos\Game_of_Life\Game_of_Life\Source.c(164,9): warning C4101: j: неиспользованная локальная переменная
+C:\Users\Егор\source\repos\Game_of_Life\Game_of_Life\Source.c(416,9): warning C4101: j: неиспользованная локальная переменная
+C:\Users\Егор\source\repos\Game_of_Life\Game_of_Life\Source.c(435,9): warning C4101: j: неиспользованная локальная переменная
+C:\Users\Егор\source\repos\Game_of_Life\Game_of_Life\Source.c(435,6): warning C4101: i: неиспользованная локальная переменная
+C:\Users\Егор\source\repos\Game_of_Life\Game_of_Life\Source.c(1221,29): warning C4113: "void (__cdecl *)()" отличается в списках параметров от "void (__cdecl *)(void)"
+C:\Users\Егор\source\repos\Game_of_Life\Game_of_Life\Source.c(1239,29): warning C4113: "void (__cdecl *)()" отличается в списках параметров от "void (__cdecl *)(void)"
+C:\Users\Егор\source\repos\Game_of_Life\Game_of_Life\Source.c(1256,29): warning C4113: "void (__cdecl *)()" отличается в списках параметров от "void (__cdecl *)(void)"
+C:\Users\Егор\source\repos\Game_of_Life\Game_of_Life\Source.c(1357,16): warning C4133: функция: несовместимые типы - из "char *" в "int *"
+C:\Users\Егор\source\repos\Game_of_Life\Game_of_Life\Source.c(1362,22): warning C4113: "void (__cdecl *)()" отличается в списках параметров от "void (__cdecl *)(void)"
+  Создание кода
+  Previous IPDB not found, fall back to full compilation.
+  All 28 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Создание кода завершено
+glut32.lib(glut32.dll) : error LNK2026: небезопасный модуль для образа SAFESEH.
+glut32.lib(glut32.dll) : error LNK2026: небезопасный модуль для образа SAFESEH.
+glut32.lib(glut32.dll) : error LNK2026: небезопасный модуль для образа SAFESEH.
+glut32.lib(glut32.dll) : error LNK2026: небезопасный модуль для образа SAFESEH.
+glut32.lib(glut32.dll) : error LNK2026: небезопасный модуль для образа SAFESEH.
+glut32.lib(glut32.dll) : error LNK2026: небезопасный модуль для образа SAFESEH.
+glut32.lib(glut32.dll) : error LNK2026: небезопасный модуль для образа SAFESEH.
+glut32.lib(glut32.dll) : error LNK2026: небезопасный модуль для образа SAFESEH.
+glut32.lib(glut32.dll) : error LNK2026: небезопасный модуль для образа SAFESEH.
+glut32.lib(glut32.dll) : error LNK2026: небезопасный модуль для образа SAFESEH.
+glut32.lib(glut32.dll) : error LNK2026: небезопасный модуль для образа SAFESEH.
+glut32.lib(glut32.dll) : error LNK2026: небезопасный модуль для образа SAFESEH.
+glut32.lib(glut32.dll) : error LNK2026: небезопасный модуль для образа SAFESEH.
+glut32.lib(glut32.dll) : error LNK2026: небезопасный модуль для образа SAFESEH.
+glut32.lib(glut32.dll) : error LNK2026: небезопасный модуль для образа SAFESEH.
+glut32.lib(glut32.dll) : error LNK2026: небезопасный модуль для образа SAFESEH.
+glut32.lib(glut32.dll) : error LNK2026: небезопасный модуль для образа SAFESEH.
+glut32.lib(glut32.dll) : error LNK2026: небезопасный модуль для образа SAFESEH.
+glut32.lib(glut32.dll) : error LNK2026: небезопасный модуль для образа SAFESEH.
+C:\Users\Егор\source\repos\Game_of_Life\Release\Game_of_Life.exe : fatal error LNK1281: Не удается создать образ SAFESEH.
