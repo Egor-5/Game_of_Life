@@ -4,14 +4,20 @@
 #include<glut.h>
 #include<stb_easy_font.h>
 #include<malloc.h>
+struct p {
+	int life;
+	int sum;
+	int pos;
+};
 int Xwindow = 1280, Ywindow = 720, speed = 30, pixel_raz = 5, pause = 3, Xlen = 256, Ylen = 144, flag = 0, begin = 0;
-int** field1, ** field2;
+byte** field1, ** field2;
+byte* A, * B;
 
 char buffer[10000];
 int user = 0, num_quads, flagok = 0, green_auto = 0, green_user = 0, greenST_auto = 0, greenST_user = 0, greenEx = 0, green_exit = 0;
 int user_set_green[12], user_set_yell[12], yeah, prevent = 0;
 
-void firstone(int x, int y) { //ðóæü¸
+void firstone(int x, int y) { //ружьё
 	int i = x / pixel_raz, j = y / pixel_raz;
 	if ((i - 17) > 0 && (i + 19) < Xlen && (j - 5) > 0 && (j + 5) < Ylen) {
 		field1[i - 7][j] = 1; field1[i - 6][j] = 1; field1[i - 8][j - 1] = 1; field1[i - 7][j - 1] = 1;
@@ -36,7 +42,7 @@ void firstone(int x, int y) { //ðóæü¸
 	}
 }
 
-void secondone(int x, int y) { //ðåëå
+void secondone(int x, int y) { //реле
 	int i = x / pixel_raz, j = y / pixel_raz;
 	if ((i - 23) > 0 && (i + 16) < Xlen && (j - 6) > 0 && (j + 6) < Ylen) {
 		field1[i - 4][j] = 1; field1[i - 5][j + 1] = 1; field1[i - 5][j + 2] = 1; field1[i - 4][j + 2] = 1; field1[i - 3][j + 2] = 1;
@@ -55,7 +61,7 @@ void secondone(int x, int y) { //ðåëå
 	}
 }
 
-void thirdone(int x, int y) { //ãàëàêòèêà êîêà (ñþðèêåí)
+void thirdone(int x, int y) { //галактика кока (сюрикен)
 	int i = x / pixel_raz, j = y / pixel_raz;
 	if ((i - 8) > 0 && (i + 8) < Xlen && (j - 8) > 0 && (j + 8) < Ylen) {
 		for (int hey = -1; hey <= 4; hey++) { field1[i - 4][j + hey] = 1; field1[i - 3][j + hey] = 1; }
@@ -66,7 +72,7 @@ void thirdone(int x, int y) { //ãàëàêòèêà êîêà (ñþðèêåí)
 	prevent = 1;
 }
 
-fourthone(int x, int y) { //Achim's p144
+void fourthone(int x, int y) { //Achim's p144
 	int i = x / pixel_raz, j = y / pixel_raz;
 	if ((i - 15) > 0 && (i + 15) < Xlen && (j - 11) > 0 && (j + 11) < Ylen) {
 		field1[i + 13][j - 10] = 1; field1[i + 12][j - 10] = 1; field1[i + 12][j - 9] = 1; field1[i + 13][j - 9] = 1;
@@ -84,8 +90,6 @@ fourthone(int x, int y) { //Achim's p144
 	prevent = 1;
 }
 
-
-
 void WaitWat(int n, int x, int y) {
 	switch (n) {
 	case 2:
@@ -102,25 +106,19 @@ void WaitWat(int n, int x, int y) {
 		break;
 	}
 }
-void Auto_New_Game() {
+
+void Auto_New_Game_B() {
 	srand(time(NULL));
-	int i, j;
-	field1 = (int**)malloc(Xlen * sizeof(int));
-	field2 = (int**)calloc(Xlen, sizeof(int));
-	if (field1 == NULL || field2 == NULL)
+	A = (byte*)malloc(Xlen *Ylen* sizeof(byte));	
+	if (A == NULL)
 		exit(0);
-	for (i = 0; i < Xlen; i++) {
-		field1[i] = (int*)calloc(Ylen, sizeof(int));
-		field2[i] = (int*)calloc(Ylen, sizeof(int));
-		if (field1[i] == NULL || field2[i] == NULL)
-			exit(0);
-		for (j = 0; j < Ylen; j++)
-			field1[i][j] = rand() % 2;
-	}
+	for (int i = 0; i < Xlen * Ylen; i++)
+		A[i] = rand() % 2;
 	glMatrixMode(GL_PROJECTION);
 	gluOrtho2D(0, Xwindow, Ywindow, 0);
 	glClearColor(0, 0, 0, 0);
 }
+
 void Figure_New_Game() {
 	srand(time(NULL));
 	int i, j;
@@ -149,18 +147,18 @@ void Figure_New_Game() {
 	field1[31][11 + 6] = 1; field1[35][11 + 3] = 1; field1[36][11 + 3] = 1; field1[35][11 + 4] = 1;
 	field1[36][11 + 4] = 1; field1[57][11 + 38] = 1; field1[62][11 + 38] = 1; field1[55][11 + 39] = 1;
 	field1[56][11 + 39] = 1; field1[58][11 + 39] = 1; field1[59][11 + 39] = 1; field1[60][11 + 39] = 1;
-	field1[61][11 + 39] = 1; field1[63][11 + 39] = 1; field1[64][11 + 39] = 1; field1[57][11 + 40] = 1; field1[62][11 + 40] = 1;// ðóæü¸
+	field1[61][11 + 39] = 1; field1[63][11 + 39] = 1; field1[64][11 + 39] = 1; field1[57][11 + 40] = 1; field1[62][11 + 40] = 1;// ружьё
 
 
 	field1[67][12] = 1; field1[68][12] = 1; field1[69][12] = 1; field1[67][13] = 1; field1[68][13] = 1;
 	field1[69][13] = 1; field1[67][14] = 1; field1[68][14] = 1; field1[69][14] = 1; field1[70][15] = 1;
 	field1[71][15] = 1; field1[72][15] = 1; field1[70][16] = 1; field1[71][16] = 1; field1[72][16] = 1;
-	field1[70][17] = 1; field1[71][17] = 1; field1[72][17] = 1;//âîñüì¸ðêà
+	field1[70][17] = 1; field1[71][17] = 1; field1[72][17] = 1;//восьмёрка
 
 	field1[87][17] = 1; field1[88][17] = 1; field1[89][17] = 1; field1[87][16] = 1; field1[88][16] = 1;
 	field1[89][16] = 1; field1[87][15] = 1; field1[88][15] = 1; field1[89][15] = 1; field1[90][14] = 1;
 	field1[91][14] = 1; field1[92][14] = 1; field1[90][13] = 1; field1[91][13] = 1; field1[92][13] = 1;
-	field1[90][12] = 1; field1[91][12] = 1; field1[92][12] = 1;//îáðàòíàÿ âîñüì¸ðêà
+	field1[90][12] = 1; field1[91][12] = 1; field1[92][12] = 1;//обратная восьмёрка
 
 
 	field1[110][12] = 1; field1[111][12] = 1; field1[112][12] = 1; field1[116][12] = 1; field1[117][12] = 1;
@@ -172,7 +170,7 @@ void Figure_New_Game() {
 	field1[108][20] = 1; field1[108][21] = 1; field1[108][22] = 1; field1[113][20] = 1; field1[113][21] = 1;
 	field1[113][22] = 1; field1[115][20] = 1; field1[115][21] = 1; field1[115][22] = 1; field1[110][24] = 1;
 	field1[111][24] = 1; field1[112][24] = 1; field1[116][24] = 1; field1[117][24] = 1; field1[118][24] = 1;
-	field1[120][20] = 1; field1[120][21] = 1; field1[120][22] = 1;//ïóëüñàð
+	field1[120][20] = 1; field1[120][21] = 1; field1[120][22] = 1;//пульсар
 
 	for (int i = 140; i <= 147; i++) {
 		field1[i][12] = 1;
@@ -188,7 +186,7 @@ void Figure_New_Game() {
 	}
 	field1[165][9] = 1; field1[172][9] = 1;
 	for (int i = 167; i <= 170; i++)
-		field1[i][9] = 1;//ðåëå
+		field1[i][9] = 1;//реле
 
 
 	field1[188][12] = 1; field1[189][12] = 1; field1[190][12] = 1;
@@ -211,7 +209,7 @@ void Figure_New_Game() {
 	field1[183][22] = 1; field1[184][22] = 1; field1[183][23] = 1;
 	field1[184][25] = 1; field1[185][25] = 1; field1[185][24] = 1;
 	field1[194][22] = 1; field1[195][22] = 1; field1[195][23] = 1;
-	field1[193][24] = 1; field1[193][25] = 1; field1[194][25] = 1;// ôîíòàí
+	field1[193][24] = 1; field1[193][25] = 1; field1[194][25] = 1;// фонтан
 
 
 	for (int i = 212; i <= 215; i++) {
@@ -223,7 +221,7 @@ void Figure_New_Game() {
 		}
 	}
 	field1[212][13] = 1; field1[215][13] = 1; field1[210][15] = 1; field1[217][15] = 1;
-	field1[210][16] = 1; field1[217][16] = 1; field1[212][18] = 1; field1[215][18] = 1; //êðîññ
+	field1[210][16] = 1; field1[217][16] = 1; field1[212][18] = 1; field1[215][18] = 1; //кросс
 
 
 	field1[234][12] = 1; field1[235][12] = 1; field1[236][12] = 1;
@@ -232,7 +230,7 @@ void Figure_New_Game() {
 	field1[230][17] = 1; field1[240][17] = 1;
 	field1[230][18] = 1; field1[232][18] = 1; field1[238][18] = 1; field1[240][18] = 1;
 	field1[232][20] = 1; field1[234][20] = 1; field1[236][20] = 1; field1[238][20] = 1;
-	field1[234][22] = 1; field1[235][22] = 1; field1[236][22] = 1;//çâåçäà
+	field1[234][22] = 1; field1[235][22] = 1; field1[236][22] = 1;//звезда
 
 
 	for (int i = 10; i <= 15; i++) {
@@ -246,7 +244,7 @@ void Figure_New_Game() {
 	}
 	for (int j = 160 - 60; j >= 160 - 65; j--) {
 		field1[17][j] = 1; field1[18][j] = 1;
-	}//ãàëàêòèêà Êîêà
+	}//галактика Кока
 
 
 	for (int i = 41; i <= 48; i++) {
@@ -262,7 +260,7 @@ void Figure_New_Game() {
 		if (i != 41 && i != 46)
 			field1[i][160 - 66] = 1;
 	field1[45][160 - 57] = 1; field1[43][160 - 58] = 1; field1[46][160 - 58] = 1;
-	field1[43][160 - 59] = 1; field1[44][160 - 60] = 1; field1[46][160 - 59] = 1;//ìóõîìîð
+	field1[43][160 - 59] = 1; field1[44][160 - 60] = 1; field1[46][160 - 59] = 1;//мухомор
 
 
 	field1[71][160 - 57] = 1; field1[71][160 - 59] = 1; field1[70][160 - 58] = 1; field1[72][160 - 58] = 1;
@@ -272,7 +270,7 @@ void Figure_New_Game() {
 	field1[79][160 - 58] = 1; field1[80][160 - 58] = 1; field1[81][160 - 58] = 1; field1[79][160 - 59] = 1;
 	field1[79][160 - 60] = 1; field1[80][160 - 60] = 1; field1[81][160 - 60] = 1; field1[81][160 - 59] = 1;
 	field1[79][160 - 64] = 1; field1[80][160 - 64] = 1; field1[81][160 - 64] = 1; field1[79][160 - 65] = 1;
-	field1[79][160 - 66] = 1; field1[80][160 - 66] = 1; field1[81][160 - 66] = 1; field1[81][160 - 65] = 1;//ýâðèêà
+	field1[79][160 - 66] = 1; field1[80][160 - 66] = 1; field1[81][160 - 66] = 1; field1[81][160 - 65] = 1;//эврика
 
 
 	field1[111][160 - 45] = 1; field1[112][160 - 45] = 1;
@@ -318,7 +316,7 @@ void Figure_New_Game() {
 	field1[142][160 - 65] = 1; field1[147][160 - 65] = 1; field1[142][160 - 67] = 1; field1[147][160 - 67] = 1;
 	for (int i = 140; i <= 149; i++)
 		if (i != 142 && i != 147)
-			field1[i][160 - 66] = 1;//ïåíòàäåêàòëîíû
+			field1[i][160 - 66] = 1;//пентадекатлоны
 
 
 	field1[177][160 - 62] = 1; field1[182][160 - 62] = 1; field1[177][160 - 64] = 1; field1[182][160 - 64] = 1;
@@ -332,7 +330,7 @@ void Figure_New_Game() {
 	field1[172][160 - 65] = 1; field1[173][160 - 65] = 1; field1[186][160 - 65] = 1; field1[187][160 - 65] = 1;
 	field1[171][160 - 66] = 1; field1[173][160 - 66] = 1; field1[186][160 - 66] = 1; field1[188][160 - 66] = 1;
 	field1[171][160 - 67] = 1; field1[188][160 - 67] = 1;
-	field1[170][160 - 68] = 1; field1[171][160 - 68] = 1; field1[188][160 - 68] = 1; field1[189][160 - 68] = 1;//øåéêåð
+	field1[170][160 - 68] = 1; field1[171][160 - 68] = 1; field1[188][160 - 68] = 1; field1[189][160 - 68] = 1;//шейкер
 
 
 	field1[204][160 - 58] = 1; field1[213][160 - 58] = 1;
@@ -350,7 +348,7 @@ void Figure_New_Game() {
 	field1[204][160 - 67] = 1; field1[205][160 - 67] = 1; field1[207][160 - 67] = 1;
 	field1[210][160 - 67] = 1; field1[212][160 - 67] = 1; field1[213][160 - 67] = 1;
 	field1[204][160 - 68] = 1; field1[206][160 - 68] = 1; field1[207][160 - 68] = 1;
-	field1[210][160 - 68] = 1; field1[211][160 - 68] = 1; field1[213][160 - 68] = 1;//î÷êè
+	field1[210][160 - 68] = 1; field1[211][160 - 68] = 1; field1[213][160 - 68] = 1;//очки
 
 
 	for (int i = 231; i <= 239; i++)
@@ -366,65 +364,60 @@ void Figure_New_Game() {
 	field1[230][160 - 64] = 1; field1[240][160 - 64] = 1;
 	field1[232][160 - 65] = 1; field1[233][160 - 65] = 1; field1[237][160 - 65] = 1; field1[238][160 - 65] = 1;
 	field1[231][160 - 66] = 1; field1[233][160 - 66] = 1; field1[237][160 - 66] = 1; field1[239][160 - 66] = 1;
-	field1[233][160 - 67] = 1; field1[237][160 - 67] = 1;//êîëåñî
+	field1[233][160 - 67] = 1; field1[237][160 - 67] = 1;//колесо
 
 
 	glMatrixMode(GL_PROJECTION);
 	gluOrtho2D(-1, Xwindow, Ywindow, -1);
 	glClearColor(0, 0, 0, 0);
 }
-void User_New_Game() {
+
+void User_New_Game_B() {
 	srand(time(NULL));
-	int i, j;
-	field1 = (int**)malloc(Xlen * sizeof(int));
-	field2 = (int**)calloc(Xlen, sizeof(int));
-	if (field1 == NULL || field2 == NULL)
+	A = (byte*)calloc(Xlen * Ylen,sizeof(byte));
+	if (A == NULL)
 		exit(0);
-	for (i = 0; i < Xlen; i++) {
-		field1[i] = (int*)calloc(Ylen, sizeof(int));
-		field2[i] = (int*)calloc(Ylen, sizeof(int));
-		if (field1[i] == NULL || field2[i] == NULL)
-			exit(0);
-	}
 	glMatrixMode(GL_PROJECTION);
 	gluOrtho2D(0, Xwindow, Ywindow, 0);
 	glClearColor(0, 0, 0, 0);
 }
+
 int Game_Rule(int x, int y) {
 	int i, j;
-	int sum_neighbors = 0;//äëÿ ñ÷¸òà ñîñåäåé êëåòêè
-	if (!x || !y || (x == Xlen - 1) || (y == Ylen - 1))//åñëè êëåòêà ïîïàäàåò â êðàÿ ìàññèâà, òî îíà ïîãèáàåò
+	int sum_neighbors = 0;//для счёта соседей клетки
+	if (!x || !y || (x == Xlen - 1) || (y == Ylen - 1))//если клетка попадает в края массива, то она погибает
 		return 0;
 	else {
 		for (i = x - 1; i <= x + 1; i++)
-			for (j = y - 1; j <= y + 1; j++)// ñ÷èòûâàåì âñåõ âîçìîæíûõ ñîñåäåé êëåòêè(èõ 8), âìåñòå ñ êëåòêîé 9
+			for (j = y - 1; j <= y + 1; j++)// считываем всех возможных соседей клетки(их 8), вместе с клеткой 9
 				sum_neighbors += field1[i][j];
-		sum_neighbors -= field1[x][y];// âû÷èòàåì èç ñóììû çíà÷åíèå òåêóùåé êëåòêè, ò.ê. å¸ ñ÷èòàòü íå íàäî
-		if (field1[x][y]) {//åñëè êëåòêà æèâà
-			if ((sum_neighbors == 2) || (sum_neighbors == 3))//åñëè 2 èëè 3 ñîñåäà æèçíü ïðîäîëæàåòñÿ, èíà÷å êëåòêà ïîãèáàåò
+		sum_neighbors -= field1[x][y];// вычитаем из суммы значение текущей клетки, т.к. её считать не надо
+		if (field1[x][y]) {//если клетка жива
+			if ((sum_neighbors == 2) || (sum_neighbors == 3))//если 2 или 3 соседа жизнь продолжается, иначе клетка погибает
 				return 1;
 			else
 				return 0;
 		}
-		else if (sum_neighbors == 3)//åñëè êëåòêà ìåðòâà, íî òðè ñîñåäà, æèçíü â êëåòêå çàðîæäàåòñÿ
+		else if (sum_neighbors == 3)//если клетка мертва, но три соседа, жизнь в клетке зарождается
 			return 1;
 		else
 			return 0;
 	}
 }
-void Auto_Draw() {
+
+void Auto_Draw_B() {
 	glClear(GL_COLOR_BUFFER_BIT);
-	for (int i = 0; i < Xlen; i++)
-		for (int j = 0; j < Ylen; j++) {
-			if (field1[i][j])
-				glColor3f(rand() % 2, rand() % 2, rand() % 2);
-			else
-				glColor3f(0, 0, 0);
-			glPointSize(pixel_raz);
-			glBegin(GL_POINTS);
-			glVertex2f(i * pixel_raz, j * pixel_raz);
-			glEnd();
-		}
+	for (int i = 0; i < Xlen * Ylen; i++) {
+		if (A[i])
+			glColor3f(rand() % 2, rand() % 2, rand() % 2);
+		else
+			glColor3f(0, 0, 0);
+		glPointSize(pixel_raz);
+		glBegin(GL_POINTS);
+		glVertex2f(i/Ylen * pixel_raz, i%Ylen*pixel_raz);
+		glEnd();
+	}
+	
 	int i = 0, j = 0, k = 1;
 	if (pixel_raz == 10) {
 		i = 6; k = 1; j = 6;
@@ -450,12 +443,104 @@ void Auto_Draw() {
 			glEnd();
 		}
 	}
-	for (int i = 0; i < Xlen; i++)
-		for (int j = 0; j < Ylen; j++)
-			field2[i][j] = Game_Rule(i, j);
+	struct p* mass = (struct p*)malloc(Xlen * Ylen * sizeof(struct p));
+	int t = 0;
+	for (int i = 1; i < Ylen - 1; i++)
+		for (int j = 1; j < Xlen - 1; j++){
+			int pos = j * Ylen + i;
+			byte sum=(byte)(
+				A[pos - Ylen - 1] + A[pos - Ylen] + A[pos - Ylen + 1] +
+				A[pos - 1] + A[pos + 1] +
+				A[pos + Ylen - 1] + A[pos + Ylen] + A[pos + Ylen + 1]);
+			if (sum == 2 || sum == 3) {
+				mass[t].life = A[pos];
+				mass[t].sum = sum;
+				mass[t].pos = pos;
+				t++;
+			}
+		}
+	memset(A, 0, Xlen*Ylen*sizeof(byte));
+	for (int i = 0; i < t; i++) {
+		if(mass[i].life)
+			A[mass[i].pos] = 1;
+		else if(mass[i].sum==3)
+			A[mass[i].pos] = 1;
+	}
+	free(mass);
 	glutSwapBuffers();
 }
-void User_Draw() {
+
+void User_Draw_B() {
+	glClear(GL_COLOR_BUFFER_BIT);
+	for (int i = 0; i < Xlen * Ylen; i++) {
+		if (A[i])
+			glColor3f(rand() % 2, rand() % 2, rand() % 2);
+		else
+			glColor3f(0, 0, 0);
+		glPointSize(pixel_raz);
+		glBegin(GL_POINTS);
+		glVertex2f(i / Ylen * pixel_raz, i % Ylen * pixel_raz);
+		glEnd();
+	}
+
+	int i = 0, j = 0, k = 1;
+	if (pixel_raz == 10) {
+		i = 6; k = 1; j = 6;
+	}
+	if (pixel_raz == 5) {
+		i = 3; k = 1.1; j = 3;
+	}
+	if (pixel_raz == 5 || pixel_raz == 10) {
+		
+		for (i; i <= Xwindow; i += pixel_raz * k) {
+			glColor3f(0.2, 0.2, 0.2);
+			glLineWidth(0.2);
+			glBegin(GL_LINES);
+			glVertex2f(i, 0);
+			glVertex2f(i, Ywindow);
+			glEnd();
+		}
+		for (j; j <= Ywindow; j += pixel_raz * k) {
+			glColor3f(0.2, 0.2, 0.2);
+			glLineWidth(0.2);
+			glBegin(GL_LINES);
+			glVertex2f(0, j);
+			glVertex2f(Xwindow, j);
+			glEnd();
+		}
+	}
+	if (begin) {
+		struct p* mass = (struct p*)malloc(Xlen * Ylen * sizeof(struct p));
+		int t = 0;
+		for (int i = 1; i < Ylen - 1; i++)
+			for (int j = 1; j < Xlen - 1; j++)
+			{
+				int pos = j * Ylen + i;
+				byte sum = (byte)(
+					A[pos - Ylen - 1] + A[pos - Ylen] + A[pos - Ylen + 1] +
+					A[pos - 1] + A[pos + 1] +
+					A[pos + Ylen - 1] + A[pos + Ylen] + A[pos + Ylen + 1]);
+				if (sum == 2 || sum == 3) {
+					mass[t].life = A[pos];
+					mass[t].sum = sum;
+					mass[t].pos = pos;
+					t++;
+				}
+
+			}
+		memset(A, 0, Xlen * Ylen * sizeof(byte));
+		for (int i = 0; i < t; i++) {
+			if (mass[i].life)
+				A[mass[i].pos] = 1;
+			else if (mass[i].sum == 3)
+				A[mass[i].pos] = 1;
+		}
+		free(mass);
+	}
+	glutSwapBuffers();
+}
+
+void Figure_Draw() {
 	for (int i = 1; i < Xlen; i++)
 		for (int j = 1; j < Ylen; j++)
 		{
@@ -500,22 +585,30 @@ void User_Draw() {
 	}
 	glutSwapBuffers();
 }
+
 void swap() {
 	int** tmp;
 	tmp = field1;
 	field1 = field2;
 	field2 = tmp;
 }
+
 void Auto_Timer(int n) {
-	Auto_Draw();
-	swap();
+	Auto_Draw_B();
 	glutTimerFunc(speed, Auto_Timer, 0);
 }
+
 void User_Timer(int n) {
-	User_Draw();
-	swap();
+	User_Draw_B();
 	glutTimerFunc(speed, User_Timer, 0);
 }
+
+void Figure_Timer(int n) {
+	Figure_Draw();
+	swap();
+	glutTimerFunc(speed, Figure_Timer, 0);
+}
+
 void StandartKeybord(unsigned char key, int x, int y) {
 	if (key == 32)
 		Sleep(pause * 1000);
@@ -524,6 +617,9 @@ void StandartKeybord(unsigned char key, int x, int y) {
 			begin = 1;
 		else {
 			Sleep(3000);
+			free(field1);
+			free(field2);
+			free(A);
 			exit(0);
 		}
 	}
@@ -532,6 +628,7 @@ void StandartKeybord(unsigned char key, int x, int y) {
 	else if (key == 74 || key == 106) yeah = 3;
 	else if (key == 72 || key == 104) yeah = 4;
 }
+
 void SpecialKeybord(int key, int x, int y) {
 	if (key == GLUT_KEY_UP && speed > 10)
 		speed -= 10;
@@ -540,25 +637,28 @@ void SpecialKeybord(int key, int x, int y) {
 	if (key == GLUT_KEY_DOWN)
 		speed += 10;
 }
+
 void Mouse_Pressed_Move(int x, int y) {
 	if (x / pixel_raz < 0 || y / pixel_raz < 0 || x / pixel_raz >= Xlen || y / pixel_raz >= Ylen)
 		exit(0);
-	field1[x / pixel_raz][y / pixel_raz] = 1;
+	A[x / pixel_raz * Ylen + y / pixel_raz] = 1;
 }
+
 void Mouse_Pressed(int button, int state, int x, int y) {
 	if (x / pixel_raz < 0 || y / pixel_raz < 0 || x / pixel_raz >= Xlen || y / pixel_raz >= Ylen)
 		exit(0);
-	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-		field1[x / pixel_raz][y / pixel_raz] = 1;
-
+	if (button == GLUT_LEFT_BUTTON&& button==GLUT_DOWN)
+		A[x / pixel_raz * Ylen + y / pixel_raz] = 1;
 	yeah += 1;
 	WaitWat(yeah, x, y);
 	yeah = 0;
 }
+
 void Window_Size(GLint w, GLint h) {
 	if (glutGet(GLUT_WINDOW_WIDTH) != Xwindow || glutGet(GLUT_WINDOW_HEIGHT) != Ywindow)
 		glutReshapeWindow(Xwindow, Ywindow);
 }
+
 void Quads(int x1, int y1, int x2, int y2) {
 	glBegin(GL_QUADS);
 	glVertex3f(x1, y1, 0);
@@ -567,6 +667,7 @@ void Quads(int x1, int y1, int x2, int y2) {
 	glVertex3f(x2, y1, 0);
 	glEnd();
 }
+
 void Menu() {
 	if (!flagok) {
 		glScalef(0.15, -0.15, 1);
@@ -757,6 +858,7 @@ void Menu() {
 	glutSwapBuffers();
 	glScalef(1, 1, 1);
 }
+
 void Botton_color(int x, int y) {
 	x -= 250;
 	y -= 250;
@@ -838,6 +940,7 @@ void Botton_color(int x, int y) {
 		glutPostRedisplay();
 	}
 }
+
 void Reshape(GLint w, GLint h) {
 	if (glutGet(GLUT_WINDOW_WIDTH) != 500 || glutGet(GLUT_WINDOW_HEIGHT) != 500)
 		glutReshapeWindow(500, 500);
@@ -849,7 +952,7 @@ void Reshape(GLint w, GLint h) {
 	if (flagok)
 		glScalef(0.15, -0.15, 1);
 }
-void Choice(int btn, int state, int x, int y) {
+void Сhoice(int btn, int state, int x, int y) {
 	x -= 250; y -= 250;
 	if (state == GLUT_DOWN && btn == GLUT_LEFT_BUTTON) {
 		if (x > -203 && x<-70 && y>-155 && y < -95) {
@@ -872,8 +975,8 @@ void Choice(int btn, int state, int x, int y) {
 			glutInitWindowPosition(0, 5);
 			glutInitDisplayMode(GLUT_DOUBLE);
 			glutCreateWindow("Game of Life");
-			Auto_New_Game();
-			glutDisplayFunc(Auto_Draw);
+			Auto_New_Game_B();
+			glutDisplayFunc(Auto_Draw_B);
 			Auto_Timer(0);
 			glutMouseFunc(Mouse_Pressed);
 			glutMotionFunc(Mouse_Pressed_Move);
@@ -888,10 +991,10 @@ void Choice(int btn, int state, int x, int y) {
 			glutInitWindowPosition(0, 5);
 			glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
 			glutCreateWindow("Game of Life");
-			User_New_Game();
+			User_New_Game_B();
 			glutMouseFunc(Mouse_Pressed);
 			glutMotionFunc(Mouse_Pressed_Move);
-			glutDisplayFunc(User_Draw);
+			glutDisplayFunc(User_Draw_B);
 			User_Timer(0);
 			glutKeyboardFunc(StandartKeybord);
 			glutSpecialFunc(SpecialKeybord);
@@ -906,10 +1009,8 @@ void Choice(int btn, int state, int x, int y) {
 			glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
 			glutCreateWindow("Game of Life");
 			Figure_New_Game();
-			glutMouseFunc(Mouse_Pressed);
-			glutMotionFunc(Mouse_Pressed_Move);
-			glutDisplayFunc(User_Draw);
-			User_Timer(0);
+			glutDisplayFunc(Figure_Draw);
+			Figure_Timer(0);
 			glutKeyboardFunc(StandartKeybord);
 			glutSpecialFunc(SpecialKeybord);
 			glutReshapeFunc(Window_Size);
@@ -1007,6 +1108,7 @@ void Choice(int btn, int state, int x, int y) {
 		glutPostRedisplay();
 	}
 }
+
 int main(char argc, char** argv) {
 	FreeConsole();
 	glutInit(&argc, argv);
@@ -1017,6 +1119,6 @@ int main(char argc, char** argv) {
 	glutDisplayFunc(Menu);
 	glutReshapeFunc(Reshape);
 	glutPassiveMotionFunc(Botton_color);
-	glutMouseFunc(Choice);
+	glutMouseFunc(Сhoice);
 	glutMainLoop();
 }
