@@ -12,7 +12,7 @@ struct p {
 int Xwindow = 1280, Ywindow = 720, speed = 30, pixel_raz = 5, pause = 3, Xlen = 256, Ylen = 144, flag = 0, begin = 0;
 byte** field1, ** field2;
 byte* A, * B;
-
+byte figure = 0;
 char buffer[10000];
 int user = 0, num_quads, flagok = 0, green_auto = 0, green_user = 0, greenST_auto = 0, greenST_user = 0, greenEx = 0, green_exit = 0;
 int user_set_green[12], user_set_yell[12], yeah, prevent = 0;
@@ -109,17 +109,19 @@ void WaitWat(int n, int x, int y) {
 
 void Auto_New_Game_B() {
 	srand(time(NULL));
-	A = (byte*)malloc(Xlen *Ylen* sizeof(byte));	
+	A = (byte*)malloc(Xlen * Ylen * sizeof(byte));
 	if (A == NULL)
 		exit(0);
 	for (int i = 0; i < Xlen * Ylen; i++)
 		A[i] = rand() % 2;
+	begin = 1;
 	glMatrixMode(GL_PROJECTION);
 	gluOrtho2D(0, Xwindow, Ywindow, 0);
 	glClearColor(0, 0, 0, 0);
 }
 
 void Figure_New_Game() {
+	figure = 1;
 	srand(time(NULL));
 	int i, j;
 	field1 = (int**)malloc(Xlen * sizeof(int));
@@ -374,7 +376,7 @@ void Figure_New_Game() {
 
 void User_New_Game_B() {
 	srand(time(NULL));
-	A = (byte*)calloc(Xlen * Ylen,sizeof(byte));
+	A = (byte*)calloc(Xlen * Ylen, sizeof(byte));
 	if (A == NULL)
 		exit(0);
 	glMatrixMode(GL_PROJECTION);
@@ -382,95 +384,17 @@ void User_New_Game_B() {
 	glClearColor(0, 0, 0, 0);
 }
 
-int Game_Rule(int x, int y) {
-	int i, j;
-	int sum_neighbors = 0;//для счёта соседей клетки
-	if (!x || !y || (x == Xlen - 1) || (y == Ylen - 1))//если клетка попадает в края массива, то она погибает
-		return 0;
-	else {
-		for (i = x - 1; i <= x + 1; i++)
-			for (j = y - 1; j <= y + 1; j++)// считываем всех возможных соседей клетки(их 8), вместе с клеткой 9
-				sum_neighbors += field1[i][j];
-		sum_neighbors -= field1[x][y];// вычитаем из суммы значение текущей клетки, т.к. её считать не надо
-		if (field1[x][y]) {//если клетка жива
-			if ((sum_neighbors == 2) || (sum_neighbors == 3))//если 2 или 3 соседа жизнь продолжается, иначе клетка погибает
-				return 1;
-			else
-				return 0;
-		}
-		else if (sum_neighbors == 3)//если клетка мертва, но три соседа, жизнь в клетке зарождается
-			return 1;
-		else
-			return 0;
-	}
+char Game_Rule(int x, int y) {
+	short sum_neighbors = field1[x - 1][y] + field1[x - 1][y - 1] + field1[x - 1][y + 1] + field1[x][y + 1]
+		+ field1[x][y - 1] + field1[x + 1][y] + field1[x + 1][y - 1] + field1[x + 1][y + 1];
+	if (!field1[x][y])
+		return !!(sum_neighbors == 3);
+	else
+		return !!(sum_neighbors == 3 || sum_neighbors == 2);
 }
 
-void Auto_Draw_B() {
-	glClear(GL_COLOR_BUFFER_BIT);
-	for (int i = 0; i < Xlen * Ylen; i++) {
-		if (A[i])
-			glColor3f(rand() % 2, rand() % 2, rand() % 2);
-		else
-			glColor3f(0, 0, 0);
-		glPointSize(pixel_raz);
-		glBegin(GL_POINTS);
-		glVertex2f(i/Ylen * pixel_raz, i%Ylen*pixel_raz);
-		glEnd();
-	}
-	
-	int i = 0, j = 0, k = 1;
-	if (pixel_raz == 10) {
-		i = 6; k = 1; j = 6;
-	}
-	if (pixel_raz == 5) {
-		i = 3; k = 1.1; j = 3;
-	}
-	if (pixel_raz == 5 || pixel_raz == 10) {
-		for (i; i <= Xwindow; i += pixel_raz * k) {
-			glColor3f(0.2, 0.2, 0.2);
-			glLineWidth(0.2);
-			glBegin(GL_LINES);
-			glVertex2f(i, 0);
-			glVertex2f(i, Ywindow);
-			glEnd();
-		}
-		for (j; j <= Ywindow; j += pixel_raz * k) {
-			glColor3f(0.2, 0.2, 0.2);
-			glLineWidth(0.2);
-			glBegin(GL_LINES);
-			glVertex2f(0, j);
-			glVertex2f(Xwindow, j);
-			glEnd();
-		}
-	}
-	struct p* mass = (struct p*)malloc(Xlen * Ylen * sizeof(struct p));
-	int t = 0;
-	for (int i = 1; i < Ylen - 1; i++)
-		for (int j = 1; j < Xlen - 1; j++){
-			int pos = j * Ylen + i;
-			byte sum=(byte)(
-				A[pos - Ylen - 1] + A[pos - Ylen] + A[pos - Ylen + 1] +
-				A[pos - 1] + A[pos + 1] +
-				A[pos + Ylen - 1] + A[pos + Ylen] + A[pos + Ylen + 1]);
-			if (sum == 2 || sum == 3) {
-				mass[t].life = A[pos];
-				mass[t].sum = sum;
-				mass[t].pos = pos;
-				t++;
-			}
-		}
-	memset(A, 0, Xlen*Ylen*sizeof(byte));
-	for (int i = 0; i < t; i++) {
-		if(mass[i].life)
-			A[mass[i].pos] = 1;
-		else if(mass[i].sum==3)
-			A[mass[i].pos] = 1;
-	}
-	free(mass);
-	glutSwapBuffers();
-}
 
-void User_Draw_B() {
+void Draw_B() {
 	glClear(GL_COLOR_BUFFER_BIT);
 	for (int i = 0; i < Xlen * Ylen; i++) {
 		if (A[i])
@@ -491,7 +415,7 @@ void User_Draw_B() {
 		i = 3; k = 1.1; j = 3;
 	}
 	if (pixel_raz == 5 || pixel_raz == 10) {
-		
+
 		for (i; i <= Xwindow; i += pixel_raz * k) {
 			glColor3f(0.2, 0.2, 0.2);
 			glLineWidth(0.2);
@@ -579,8 +503,8 @@ void Figure_Draw() {
 		}
 	}
 	if (begin) {
-		for (int i = 0; i < Xlen; i++)
-			for (int j = 0; j < Ylen; j++)
+		for (int i = 1; i < Xlen-1; i++)
+			for (int j = 1; j < Ylen-1; j++)
 				field2[i][j] = Game_Rule(i, j);
 	}
 	glutSwapBuffers();
@@ -594,12 +518,12 @@ void swap() {
 }
 
 void Auto_Timer(int n) {
-	Auto_Draw_B();
+	Draw_B();
 	glutTimerFunc(speed, Auto_Timer, 0);
 }
 
 void User_Timer(int n) {
-	User_Draw_B();
+	Draw_B();
 	glutTimerFunc(speed, User_Timer, 0);
 }
 
@@ -641,18 +565,28 @@ void SpecialKeybord(int key, int x, int y) {
 void Mouse_Pressed_Move(int x, int y) {
 	if (x / pixel_raz < 0 || y / pixel_raz < 0 || x / pixel_raz >= Xlen || y / pixel_raz >= Ylen)
 		exit(0);
-	A[x / pixel_raz * Ylen + y / pixel_raz] = 1;
+	if (figure)
+		field1[x / pixel_raz][y / pixel_raz] = 1;
+	else
+		A[x / pixel_raz * Ylen + y / pixel_raz] = 1;
 }
 
 void Mouse_Pressed(int button, int state, int x, int y) {
 	if (x / pixel_raz < 0 || y / pixel_raz < 0 || x / pixel_raz >= Xlen || y / pixel_raz >= Ylen)
 		exit(0);
-	if (button == GLUT_LEFT_BUTTON&& button==GLUT_DOWN)
-		A[x / pixel_raz * Ylen + y / pixel_raz] = 1;
-	yeah += 1;
-	WaitWat(yeah, x, y);
-	yeah = 0;
+	if (button == GLUT_LEFT_BUTTON && button == GLUT_DOWN) {
+		if (figure)
+			field1[x / pixel_raz][y / pixel_raz] = 1;
+		else
+			A[x / pixel_raz * Ylen + y / pixel_raz] = 1;
+	}
+	if (figure) {
+		yeah += 1;
+		WaitWat(yeah, x, y);
+		yeah = 0;
+	}
 }
+
 
 void Window_Size(GLint w, GLint h) {
 	if (glutGet(GLUT_WINDOW_WIDTH) != Xwindow || glutGet(GLUT_WINDOW_HEIGHT) != Ywindow)
@@ -976,7 +910,7 @@ void Сhoice(int btn, int state, int x, int y) {
 			glutInitDisplayMode(GLUT_DOUBLE);
 			glutCreateWindow("Game of Life");
 			Auto_New_Game_B();
-			glutDisplayFunc(Auto_Draw_B);
+			glutDisplayFunc(Draw_B);
 			Auto_Timer(0);
 			glutMouseFunc(Mouse_Pressed);
 			glutMotionFunc(Mouse_Pressed_Move);
@@ -994,7 +928,7 @@ void Сhoice(int btn, int state, int x, int y) {
 			User_New_Game_B();
 			glutMouseFunc(Mouse_Pressed);
 			glutMotionFunc(Mouse_Pressed_Move);
-			glutDisplayFunc(User_Draw_B);
+			glutDisplayFunc(Draw_B);
 			User_Timer(0);
 			glutKeyboardFunc(StandartKeybord);
 			glutSpecialFunc(SpecialKeybord);
@@ -1009,6 +943,8 @@ void Сhoice(int btn, int state, int x, int y) {
 			glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
 			glutCreateWindow("Game of Life");
 			Figure_New_Game();
+			glutMouseFunc(Mouse_Pressed);
+			glutMotionFunc(Mouse_Pressed_Move);
 			glutDisplayFunc(Figure_Draw);
 			Figure_Timer(0);
 			glutKeyboardFunc(StandartKeybord);
