@@ -422,9 +422,13 @@ void Draw_B() {
 		glVertex2f(i / Ylen * pixel_raz, i % Ylen * pixel_raz);
 		glEnd();
 	}
-
-	int i, j;
-	i = j = 3;
+	
+	int i = 0, j = 0;
+	if (pixel_raz == 10) {
+		i = 6; j = 6;
+	}
+	if (pixel_raz == 5) {
+		i = 3; j = 3;
 	glColor3f(0.2, 0.2, 0.2);
 	glLineWidth(0.2);
 	for (i; i <= Xwindow; i += pixel_raz) {
@@ -503,12 +507,12 @@ void Figure_Draw() {
 		glEnd();
 	}
 	if (begin) {
-		for (int i = 1; i < Xlen - 1; i+=4)
-			for (int j = 1; j < Ylen - 1; j++) {
+		for (int i = 1; i < Xlen - 1; i++)
+			for (int j = 1; j < Ylen - 1; j+4) {
 				field2[i][j] = Game_Rule(i, j);
-				field2[i][j+1] = Game_Rule(i, j);
-				field2[i][j+2] = Game_Rule(i, j);
-				field2[i][j+3] = Game_Rule(i, j);
+				field2[i][j+1] = Game_Rule(i, j+1);
+				field2[i][j+2] = Game_Rule(i, j+2);
+				field2[i][j+3] = Game_Rule(i, j+3);
 			}
 	}
 	glutSwapBuffers();
