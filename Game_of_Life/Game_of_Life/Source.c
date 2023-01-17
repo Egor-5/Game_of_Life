@@ -413,8 +413,10 @@ char Game_Rule(int x, int y) {
 void Draw_B() {
 	//glClear(GL_COLOR_BUFFER_BIT);
 	glPointSize(pixel_raz);
-	for (int i = 0; i < Xlen * Ylen; i++) {
-		if (A[i])
+	byte *p = A;
+	byte *pM = A + Xlen * Ylen;
+	for (int i = 0; p < pM; p++, i++) {
+		if (*p)
 			glColor3f(rand() % 2, rand() % 2, rand() % 2);
 		else
 			glColor3f(0, 0, 0);
@@ -588,9 +590,9 @@ void Mouse_Pressed(int button, int state, int x, int y) {
 			A[x / pixel_raz * Ylen + y / pixel_raz] = 1;
 	}
 	if (figure) {
-		yeah += 1;
+		yeah++;
 		WaitWat(yeah, x, y);
-		yeah = 0;
+		yeah >> 1;
 	}
 }
 

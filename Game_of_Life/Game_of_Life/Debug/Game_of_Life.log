@@ -5,13 +5,14 @@ C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(144,43): warni
 C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(150,46): warning C4133: =: несовместимые типы - из "int *" в "byte *"
 C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(151,46): warning C4133: =: несовместимые типы - из "int *" в "byte *"
 C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(142,9): warning C4101: j: неиспользованная локальная переменная
-C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(519,14): warning C4133: =: несовместимые типы - из "byte **" в "int **"
-C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(521,14): warning C4133: =: несовместимые типы - из "int **" в "byte **"
-C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(917,26): warning C4113: "void (__cdecl *)()" отличается в списках параметров от "void (__cdecl *)(void)"
-C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(935,26): warning C4113: "void (__cdecl *)()" отличается в списках параметров от "void (__cdecl *)(void)"
-C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(952,31): warning C4113: "void (__cdecl *)()" отличается в списках параметров от "void (__cdecl *)(void)"
-C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(1054,16): warning C4133: функция: несовместимые типы - из "char *" в "int *"
-C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(1059,22): warning C4113: "void (__cdecl *)()" отличается в списках параметров от "void (__cdecl *)(void)"
+C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(524,14): warning C4133: =: несовместимые типы - из "byte **" в "int **"
+C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(526,14): warning C4133: =: несовместимые типы - из "int **" в "byte **"
+C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(595,8): warning C4552: ">>": результат выражения не используется
+C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(922,26): warning C4113: "void (__cdecl *)()" отличается в списках параметров от "void (__cdecl *)(void)"
+C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(940,26): warning C4113: "void (__cdecl *)()" отличается в списках параметров от "void (__cdecl *)(void)"
+C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(957,31): warning C4113: "void (__cdecl *)()" отличается в списках параметров от "void (__cdecl *)(void)"
+C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(1059,16): warning C4133: функция: несовместимые типы - из "char *" в "int *"
+C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(1064,22): warning C4113: "void (__cdecl *)()" отличается в списках параметров от "void (__cdecl *)(void)"
 LINK : warning LNK4075: не учитывается "/INCREMENTAL" из-за спецификации "/PROFILE"
 Source.obj : warning LNK4075: не учитывается "/EDITANDCONTINUE" из-за спецификации "/OPT:REF"
   Game_of_Life.vcxproj -> C:\Users\lanember\source\repos\Game_of_Life\Debug\Game_of_Life.exe
