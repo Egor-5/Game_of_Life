@@ -588,11 +588,11 @@ void Mouse_Pressed(int button, int state, int x, int y) {
 			field1[x / pixel_raz][y / pixel_raz] = 1;
 		else
 			A[x / pixel_raz * Ylen + y / pixel_raz] = 1;
-	}
-	if (figure) {
-		yeah++;
-		WaitWat(yeah, x, y);
-		yeah >> 1;
+		if (figure) {
+			yeah++;
+			WaitWat(yeah, x, y);
+			yeah >>= 3;
+		}
 	}
 }
 
@@ -1055,7 +1055,7 @@ void Сhoice(int btn, int state, int x, int y) {
 }
 
 int main(char argc, char** argv) {
-	FreeConsole();
+	//FreeConsole();
 	glutInit(&argc, argv);
 	glutInitWindowSize(500, 500);
 	glutInitWindowPosition(200, 200);
