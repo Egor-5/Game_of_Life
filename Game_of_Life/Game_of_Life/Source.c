@@ -412,12 +412,12 @@ char Game_Rule(int x, int y) {
 
 void Draw_B() {
 	//glClear(GL_COLOR_BUFFER_BIT);
+	glPointSize(pixel_raz);
 	for (int i = 0; i < Xlen * Ylen; i++) {
 		if (A[i])
 			glColor3f(rand() % 2, rand() % 2, rand() % 2);
 		else
 			glColor3f(0, 0, 0);
-		glPointSize(pixel_raz);
 		glBegin(GL_POINTS);
 		glVertex2f(i / Ylen * pixel_raz, i % Ylen * pixel_raz);
 		glEnd();
@@ -429,6 +429,7 @@ void Draw_B() {
 	}
 	if (pixel_raz == 5) {
 		i = 3; j = 3;
+	}
 	glColor3f(0.2, 0.2, 0.2);
 	glLineWidth(0.2);
 	for (i; i <= Xwindow; i += pixel_raz) {
@@ -490,17 +491,15 @@ void Figure_Draw() {
 		}
 	int i, j;
 	i = j = 3;
+	glColor3f(0.2, 0.2, 0.2);
+	glLineWidth(0.2);
 	for (i; i <= Xwindow; i += pixel_raz) {
-		glColor3f(0.2, 0.2, 0.2);
-		glLineWidth(0.2);
 		glBegin(GL_LINES);
 		glVertex2f(i, 0);
 		glVertex2f(i, Ywindow);
 		glEnd();
 	}
 	for (j; j <= Ywindow; j += pixel_raz) {
-		glColor3f(0.2, 0.2, 0.2);
-		glLineWidth(0.2);
 		glBegin(GL_LINES);
 		glVertex2f(0, j);
 		glVertex2f(Xwindow, j);
@@ -508,7 +507,7 @@ void Figure_Draw() {
 	}
 	if (begin) {
 		for (int i = 1; i < Xlen - 1; i++)
-			for (int j = 1; j < Ylen - 1; j+4) {
+			for (int j = 1; j < Ylen - 1; j+=4) {
 				field2[i][j] = Game_Rule(i, j);
 				field2[i][j+1] = Game_Rule(i, j+1);
 				field2[i][j+2] = Game_Rule(i, j+2);
