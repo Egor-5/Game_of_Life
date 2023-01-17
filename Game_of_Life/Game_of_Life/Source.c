@@ -112,7 +112,7 @@ void Auto_New_Game_B() {
 	A = (byte*)malloc(Xlen * Ylen * sizeof(byte));
 	if (A == NULL)
 		exit(0);
-	for (int i = 0; i < Xlen * Ylen; i+=8) {
+	for (int i = 0; i < Xlen * Ylen; i += 16) {
 		A[i] = rand() % 2;
 		A[i + 1] = rand() % 2;
 		A[i + 2] = rand() % 2;
@@ -190,10 +190,11 @@ void Figure_New_Game() {
 	field1[111][24] = 1; field1[112][24] = 1; field1[116][24] = 1; field1[117][24] = 1; field1[118][24] = 1;
 	field1[120][20] = 1; field1[120][21] = 1; field1[120][22] = 1;//пульсар
 
-	for (int i = 140; i <= 147; i++) {
-		field1[i][12] = 1;
-		field1[i][14] = 1;
-	}
+	field1[140][12] = 1; field1[141][12] = 1; field1[142][12] = 1; field1[143][12] = 1;
+	field1[144][12] = 1; field1[145][12] = 1; field1[146][12] = 1; field1[147][12] = 1;
+	field1[140][14] = 1; field1[141][14] = 1; field1[142][14] = 1; field1[143][14] = 1;
+	field1[144][14] = 1; field1[145][14] = 1; field1[146][14] = 1; field1[147][14] = 1;
+
 	field1[140][13] = 1; field1[147][13] = 1;
 	for (int i = 142; i <= 145; i++)
 		field1[i][13] = 1;
@@ -409,12 +410,11 @@ char Game_Rule(int x, int y) {
 		return !!(sum_neighbors == 3 || sum_neighbors == 2);
 }
 
-
 void Draw_B() {
 	//glClear(GL_COLOR_BUFFER_BIT);
 	glPointSize(pixel_raz);
-	byte *p = A;
-	byte *pM = A + Xlen * Ylen;
+	byte* p = A;
+	byte* pM = A + Xlen * Ylen;
 	for (int i = 0; p < pM; p++, i++) {
 		if (*p)
 			glColor3f(rand() % 2, rand() % 2, rand() % 2);
@@ -424,27 +424,34 @@ void Draw_B() {
 		glVertex2f(i / Ylen * pixel_raz, i % Ylen * pixel_raz);
 		glEnd();
 	}
-	
-	int i = 0, j = 0;
-	if (pixel_raz == 10) {
-		i = 6; j = 6;
+	int i, j;
+	_asm {
+		cmp [pixel_raz],10
+		jne Else
+		mov[i], 6
+		mov[j], 6
+		Else:
+			cmp[pixel_raz], 5
+			jne End
+			mov[i], 3
+			mov[j], 3
+		End:
 	}
-	if (pixel_raz == 5) {
-		i = 3; j = 3;
-	}
-	glColor3f(0.2, 0.2, 0.2);
-	glLineWidth(0.2);
-	for (i; i <= Xwindow; i += pixel_raz) {
-		glBegin(GL_LINES);
-		glVertex2f(i, 0);
-		glVertex2f(i, Ywindow);
-		glEnd();
-	}
-	for (j; j <= Ywindow; j += pixel_raz) {
-		glBegin(GL_LINES);
-		glVertex2f(0, j);
-		glVertex2f(Xwindow, j);
-		glEnd();
+	if (pixel_raz == 5 || pixel_raz == 10) {
+		glColor3f(0.2, 0.2, 0.2);
+		glLineWidth(0.2);
+		for (i; i <= Xwindow; i += pixel_raz) {
+			glBegin(GL_LINES);
+			glVertex2f(i, 0);
+			glVertex2f(i, Ywindow);
+			glEnd();
+		}
+		for (j; j <= Ywindow; j += pixel_raz) {
+			glBegin(GL_LINES);
+			glVertex2f(0, j);
+			glVertex2f(Xwindow, j);
+			glEnd();
+		}
 	}
 	if (begin) {
 		struct p* mass = (struct p*)malloc(Xlen * Ylen * sizeof(struct p));
@@ -479,14 +486,13 @@ void Draw_B() {
 
 void Figure_Draw() {
 	glPointSize(pixel_raz);
-	for (int i = 1; i < Xlen; i++)
-		for (int j = 1; j < Ylen; j++)
+	for (int i = 1; i < Xlen-1; i++)
+		for (int j = 1; j < Ylen-1; j++)
 		{
 			if (field1[i][j])
 				glColor3f(rand() % 2, rand() % 2, rand() % 2);
 			else
 				glColor3f(0, 0, 0);
-			
 			glBegin(GL_POINTS);
 			glVertex2f(i * pixel_raz, j * pixel_raz);
 			glEnd();
@@ -509,11 +515,11 @@ void Figure_Draw() {
 	}
 	if (begin) {
 		for (int i = 1; i < Xlen - 1; i++)
-			for (int j = 1; j < Ylen - 1; j+=4) {
+			for (int j = 1; j < Ylen - 1; j += 4) {
 				field2[i][j] = Game_Rule(i, j);
-				field2[i][j+1] = Game_Rule(i, j+1);
-				field2[i][j+2] = Game_Rule(i, j+2);
-				field2[i][j+3] = Game_Rule(i, j+3);
+				field2[i][j + 1] = Game_Rule(i, j + 1);
+				field2[i][j + 2] = Game_Rule(i, j + 2);
+				field2[i][j + 3] = Game_Rule(i, j + 3);
 			}
 	}
 	glutSwapBuffers();
@@ -526,14 +532,9 @@ void swap() {
 	field2 = tmp;
 }
 
-void Auto_Timer(int n) {
+void Timer(int n) {
 	Draw_B();
-	glutTimerFunc(speed, Auto_Timer, 0);
-}
-
-void User_Timer(int n) {
-	Draw_B();
-	glutTimerFunc(speed, User_Timer, 0);
+	glutTimerFunc(speed, Timer, 0);
 }
 
 void Figure_Timer(int n) {
@@ -591,7 +592,7 @@ void Mouse_Pressed(int button, int state, int x, int y) {
 		if (figure) {
 			yeah++;
 			WaitWat(yeah, x, y);
-			yeah >>= 3;
+			yeah >>=3;
 		}
 	}
 }
@@ -649,31 +650,33 @@ void Menu() {
 	glDrawArrays(GL_QUADS, 0, num_quads * 4);
 	glScalef(0.6, 0.6, 0.6);
 	glColor3f(0.5, 0.5, 0.5);
+	int* P_l = user_set_yell;
 	if (user) {
-		if (user_set_yell[0])
+		if (*P_l)
 			glColor3f(1, 1, 0);
 		else
 			glColor4f(0.0f, 1.0f, 1.0f, 1.0f);
 	}
-	if (user_set_green[0])
+	int* P_g = user_set_green;
+	if (*P_g)
 		glColor3f(0, 1, 0);
 	Quads(-126, -32, -68, -21);
 	if (user) {
-		if (user_set_yell[1])
+		if (*(P_l+1))
 			glColor3f(1, 1, 0);
 		else
 			glColor4f(0.0f, 1.0f, 1.0f, 1.0f);
 	}
-	if (user_set_green[1])
+	if (*(P_g +1))
 		glColor3f(0, 1, 0);
 	Quads(-126, -19, -68, -9);
 	if (user) {
-		if (user_set_yell[2])
+		if (*(P_l + 2))
 			glColor3f(1, 1, 0);
 		else
 			glColor4f(0.0f, 1.0f, 1.0f, 1.0f);
 	}
-	if (user_set_green[2])
+	if (*(P_g + 2))
 		glColor3f(0, 1, 0);
 	Quads(-126, -7, -68, 2);
 	glColor3f(1, 0, 0);
@@ -681,30 +684,30 @@ void Menu() {
 	glDrawArrays(GL_QUADS, 0, num_quads * 4);
 	glColor3f(0.5, 0.5, 0.5);
 	if (user) {
-		if (user_set_yell[3])
+		if (*(P_l + 3))
 			glColor3f(1, 1, 0);
 		else
 			glColor4f(0.0f, 1.0f, 1.0f, 1.0f);
 	}
-	if (user_set_green[3])
+	if (*(P_g + 3))
 		glColor3f(0, 1, 0);
 	Quads(-50, -32, 0, -21);
 	if (user) {
-		if (user_set_yell[4])
+		if (*(P_l + 4))
 			glColor3f(1, 1, 0);
 		else
 			glColor4f(0.0f, 1.0f, 1.0f, 1.0f);
 	}
-	if (user_set_green[4])
+	if (*(P_g + 4))
 		glColor3f(0, 1, 0);
 	Quads(-50, -19, 0, -9);
 	if (user) {
-		if (user_set_yell[5])
+		if (*(P_l + 5))
 			glColor3f(1, 1, 0);
 		else
 			glColor4f(0.0f, 1.0f, 1.0f, 1.0f);
 	}
-	if (user_set_green[5])
+	if (*(P_g + 5))
 		glColor3f(0, 1, 0);
 	Quads(-50, -7, 0, 3);
 	glColor3f(1, 0, 0);
@@ -712,30 +715,30 @@ void Menu() {
 	glDrawArrays(GL_QUADS, 0, num_quads * 4);
 	glColor3f(0.5, 0.5, 0.5);
 	if (user) {
-		if (user_set_yell[6])
+		if (*(P_l + 6))
 			glColor3f(1, 1, 0);
 		else
 			glColor4f(0.0f, 1.0f, 1.0f, 1.0f);
 	}
-	if (user_set_green[6])
+	if (*(P_g + 6))
 		glColor3f(0, 1, 0);
 	Quads(15, -32, 65, -21);
 	if (user) {
-		if (user_set_yell[7])
+		if (*(P_l + 7))
 			glColor3f(1, 1, 0);
 		else
 			glColor4f(0.0f, 1.0f, 1.0f, 1.0f);
 	}
-	if (user_set_green[7])
+	if (*(P_g + 7))
 		glColor3f(0, 1, 0);
 	Quads(15, -19, 65, -9);
 	if (user) {
-		if (user_set_yell[8])
+		if (*(P_l + 8))
 			glColor3f(1, 1, 0);
 		else
 			glColor4f(0.0f, 1.0f, 1.0f, 1.0f);
 	}
-	if (user_set_green[8])
+	if (*(P_g + 8))
 		glColor3f(0, 1, 0);
 	Quads(15, -7, 65, 3);
 	glColor3f(1, 0, 0);
@@ -743,30 +746,30 @@ void Menu() {
 	glDrawArrays(GL_QUADS, 0, num_quads * 4);
 	glColor3f(0.5, 0.5, 0.5);
 	if (user) {
-		if (user_set_yell[9])
+		if (*(P_l + 9))
 			glColor3f(1, 1, 0);
 		else
 			glColor4f(0.0f, 1.0f, 1.0f, 1.0f);
 	}
-	if (user_set_green[9])
+	if (*(P_g + 9))
 		glColor3f(0, 1, 0);
 	Quads(78, -32, 125, -21);
 	if (user) {
-		if (user_set_yell[10])
+		if (*(P_l + 10))
 			glColor3f(1, 1, 0);
 		else
 			glColor4f(0.0f, 1.0f, 1.0f, 1.0f);
 	}
-	if (user_set_green[10])
+	if (*(P_g + 10))
 		glColor3f(0, 1, 0);
 	Quads(78, -19, 125, -9);
 	if (user) {
-		if (user_set_yell[11])
+		if (*(P_l + 11))
 			glColor3f(1, 1, 0);
 		else
 			glColor4f(0.0f, 1.0f, 1.0f, 1.0f);
 	}
-	if (user_set_green[11])
+	if (*(P_g + 11))
 		glColor3f(0, 1, 0);
 	Quads(78, -7, 125, 3);
 	glColor3f(1, 0, 0);
@@ -803,8 +806,14 @@ void Menu() {
 }
 
 void Botton_color(int x, int y) {
-	x -= 250;
-	y -= 250;
+	_asm {
+		mov edx, x
+		sub edx, 250
+		mov x, edx
+		mov edx, y
+		sub edx, 250
+		mov y, edx
+	}
 	if (x > -200 && x<-70 && y>-155 && y < -95)
 		green_auto = 1;
 	else
@@ -832,54 +841,55 @@ void Botton_color(int x, int y) {
 	glutPostRedisplay();
 
 	if (user) {
+		int* P_g = user_set_green;
 		if (x > -190 && x<-102 && y>-50 && y < -33)
-			user_set_green[0] = 1;
+			*P_g = 1;
 		else
-			user_set_green[0] = 0;
+			*P_g = 0;
 		if (x > -190 && x<-102 && y>-28 && y < -15)
-			user_set_green[1] = 1;
+			*(P_g+1) = 1;
 		else
-			user_set_green[1] = 0;
+			*(P_g + 1) = 0;
 		if (x > -190 && x<-102 && y>-12 && y < 3)
-			user_set_green[2] = 1;
+			*(P_g + 2) = 1;
 		else
-			user_set_green[2] = 0;
+			*(P_g + 2) = 0;
 		if (x > -75 && x <0 && y>-50 && y < -33)
-			user_set_green[3] = 1;
+			*(P_g + 3) = 1;
 		else
-			user_set_green[3] = 0;
+			*(P_g + 3) = 0;
 		if (x > -75 && x <0 && y>-28 && y < -15)
-			user_set_green[4] = 1;
+			*(P_g + 4) = 1;
 		else
-			user_set_green[4] = 0;
+			*(P_g + 4) = 0;
 		if (x > -75 && x <0 && y>-12 && y < 3)
-			user_set_green[5] = 1;
+			*(P_g + 5) = 1;
 		else
-			user_set_green[5] = 0;
+			*(P_g + 5) = 0;
 		if (x > 22 && x <96 && y>-50 && y < -33)
-			user_set_green[6] = 1;
+			*(P_g + 6) = 1;
 		else
-			user_set_green[6] = 0;
+			*(P_g + 6) = 0;
 		if (x > 22 && x <96 && y>-28 && y < -15)
-			user_set_green[7] = 1;
+			*(P_g + 7) = 1;
 		else
-			user_set_green[7] = 0;
+			*(P_g + 7) = 0;
 		if (x > 22 && x <96 && y>-12 && y < 3)
-			user_set_green[8] = 1;
+			*(P_g + 8) = 1;
 		else
-			user_set_green[8] = 0;
+			*(P_g + 8) = 0;
 		if (x > 116 && x <186 && y>-50 && y < -33)
-			user_set_green[9] = 1;
+			*(P_g + 9) = 1;
 		else
-			user_set_green[9] = 0;
+			*(P_g + 9) = 0;
 		if (x > 116 && x <186 && y>-28 && y < -15)
-			user_set_green[10] = 1;
+			*(P_g + 10) = 1;
 		else
-			user_set_green[10] = 0;
+			*(P_g + 10) = 0;
 		if (x > 116 && x <186 && y>-12 && y < 3)
-			user_set_green[11] = 1;
+			*(P_g + 11) = 1;
 		else
-			user_set_green[11] = 0;
+			*(P_g + 11) = 0;
 		glutPostRedisplay();
 	}
 }
@@ -896,7 +906,14 @@ void Reshape(GLint w, GLint h) {
 		glScalef(0.15, -0.15, 1);
 }
 void Сhoice(int btn, int state, int x, int y) {
-	x -= 250; y -= 250;
+	_asm {
+		mov edx, x
+		sub edx, 250
+		mov x, edx
+		mov edx, y
+		sub edx, 250
+		mov y, edx
+	}
 	if (state == GLUT_DOWN && btn == GLUT_LEFT_BUTTON) {
 		if (x > -203 && x<-70 && y>-155 && y < -95) {
 			user = 0;
@@ -920,7 +937,7 @@ void Сhoice(int btn, int state, int x, int y) {
 			glutCreateWindow("Game of Life");
 			Auto_New_Game_B();
 			glutDisplayFunc(Draw_B);
-			Auto_Timer(0);
+			Timer(0);
 			glutMouseFunc(Mouse_Pressed);
 			glutMotionFunc(Mouse_Pressed_Move);
 			glutKeyboardFunc(StandartKeybord);
@@ -938,7 +955,7 @@ void Сhoice(int btn, int state, int x, int y) {
 			glutMouseFunc(Mouse_Pressed);
 			glutMotionFunc(Mouse_Pressed_Move);
 			glutDisplayFunc(Draw_B);
-			User_Timer(0);
+			Timer(0);
 			glutKeyboardFunc(StandartKeybord);
 			glutSpecialFunc(SpecialKeybord);
 			glutReshapeFunc(Window_Size);
@@ -964,87 +981,88 @@ void Сhoice(int btn, int state, int x, int y) {
 		if (x > -135 && x < 150 && y < 194 && y>165)
 			exit(0);
 		if (user) {
+			int* P_y = user_set_yell;
 			if (x > -190 && x<-102 && y>-50 && y < -33) {
 				Xwindow = 1530;
 				Ywindow = 800;
-				user_set_yell[0] = 1;
+				*P_y = 1;
 			}
-			else if ((!user_set_yell[1] || !user_set_yell[2]) && (x > -190 && x < -102))
-				user_set_yell[0] = 0;
+			else if ((!*(P_y + 1) || !*(P_y + 2)) && (x > -190 && x < -102))
+				*P_y = 0;
 			if (x > -190 && x<-102 && y>-28 && y < -15) {
 				Xwindow = 1000;
 				Ywindow = 760;
-				user_set_yell[1] = 1;
+				*(P_y+1) = 1;
 			}
-			else if ((!user_set_yell[0] || !user_set_yell[2]) && (x > -190 && x < -102))
-				user_set_yell[1] = 0;
+			else if ((!*P_y || !*(P_y + 2)) && (x > -190 && x < -102))
+				*(P_y + 1) = 0;
 			if (x > -190 && x<-102 && y>-12 && y < 3) {
 				Xwindow = 800;
 				Ywindow = 600;
-				user_set_yell[2] = 1;
+				*(P_y + 2) = 1;
 			}
-			else if ((!user_set_yell[0] || !user_set_yell[1]) && (x > -190 && x < -102))
-				user_set_yell[2] = 0;
+			else if ((!*P_y || !*(P_y + 1)) && (x > -190 && x < -102))
+				*(P_y + 2) = 0;
 
 
 			if (x > -75 && x <0 && y>-50 && y < -33) {
 				speed = 10;
-				user_set_yell[3] = 1;
+				*(P_y + 3) = 1;
 			}
-			else if ((!user_set_yell[4] || !user_set_yell[5]) && (x > -75 && x < 0))
-				user_set_yell[3] = 0;
+			else if ((!*(P_y + 4) || !*(P_y + 5)) && (x > -75 && x < 0))
+				*(P_y + 3) = 0;
 			if (x > -75 && x <0 && y>-28 && y < -15) {
 				speed = 50;
-				user_set_yell[4] = 1;
+				*(P_y + 4) = 1;
 			}
-			else if ((!user_set_yell[5] || !user_set_yell[6]) && (x > -75 && x < 0))
-				user_set_yell[4] = 0;
+			else if ((!*(P_y + 5) || !*(P_y + 6)) && (x > -75 && x < 0))
+				*(P_y + 4) = 0;
 			if (x > -75 && x <0 && y>-12 && y < 3) {
 				speed = 200;
-				user_set_yell[5] = 1;
+				*(P_y + 5) = 1;
 			}
-			else if ((!user_set_yell[3] || !user_set_yell[4]) && (x > -75 && x < 0))
-				user_set_yell[5] = 0;
+			else if ((!*(P_y + 3) || !*(P_y + 4)) && (x > -75 && x < 0))
+				*(P_y + 5) = 0;
 
 
 			if (x > 22 && x <96 && y>-50 && y < -33) {
 				pixel_raz = 10;
-				user_set_yell[6] = 1;
+				*(P_y + 6) = 1;
 			}
-			else if ((!user_set_yell[7] || !user_set_yell[8]) && (x > 22 && x < 96))
-				user_set_yell[6] = 0;
+			else if ((!*(P_y + 7) || !*(P_y + 8)) && (x > 22 && x < 96))
+				*(P_y +6) = 0;
 			if (x > 22 && x <96 && y>-28 && y < -15) {
 				pixel_raz = 5;
-				user_set_yell[7] = 1;
+				*(P_y +7) = 1;
 			}
-			else if ((!user_set_yell[6] || !user_set_yell[8]) && (x > 22 && x < 96))
-				user_set_yell[7] = 0;
+			else if ((!*(P_y + 6) || !*(P_y + 8)) && (x > 22 && x < 96))
+				*(P_y + 7) = 0;
 			if (x > 22 && x <96 && y>-12 && y < 3) {
 				pixel_raz = 2;
-				user_set_yell[8] = 1;
+				*(P_y + 8) = 1;
 			}
-			else if ((!user_set_yell[6] || !user_set_yell[7]) && (x > 22 && x < 96))
-				user_set_yell[8] = 0;
+			else if ((!*(P_y + 6) || !*(P_y + 7)) && (x > 22 && x < 96))
+				*(P_y + 8) = 0;
 
 
 			if (x > 116 && x <186 && y>-50 && y < -33) {
 				pause = 3;
-				user_set_yell[9] = 1;
+				*(P_y + 9) = 1;
 			}
-			else if ((!user_set_yell[10] || !user_set_yell[11]) && (x > 116 && x < 186))
-				user_set_yell[9] = 0;
+			else if ((!*(P_y + 10) || !*(P_y + 11)) && (x > 116 && x < 186))
+				*(P_y + 9) = 0;
 			if (x > 116 && x <186 && y>-28 && y < -15) {
 				pause = 5;
-				user_set_yell[10] = 1;
+				*(P_y + 10) = 1;
 			}
-			else if ((!user_set_yell[9] || !user_set_yell[11]) && (x > 116 && x < 186))
-				user_set_yell[10] = 0;
+			else if ((!*(P_y + 9) || !*(P_y + 11)) && (x > 116 && x < 186))
+				*(P_y + 10) = 0;
 			if (x > 116 && x <186 && y>-12 && y < 3) {
 				pause = 10;
-				user_set_yell[11] = 1;
+				*(P_y + 11) = 1;
 			}
-			else if ((!user_set_yell[9] || !user_set_yell[10]) && (x > 116 && x < 186))
-				user_set_yell[11] = 0;
+			else if ((!*(P_y + 9) || !*(P_y + 10)) && (x > 116 && x < 186))
+				*(P_y + 11) = 0;
 		}
 		if (Xwindow && Ywindow && speed && pause && pixel_raz) {
 			Xlen = Xwindow / pixel_raz;
@@ -1055,7 +1073,7 @@ void Сhoice(int btn, int state, int x, int y) {
 }
 
 int main(char argc, char** argv) {
-	//FreeConsole();
+	FreeConsole();
 	glutInit(&argc, argv);
 	glutInitWindowSize(500, 500);
 	glutInitWindowPosition(200, 200);

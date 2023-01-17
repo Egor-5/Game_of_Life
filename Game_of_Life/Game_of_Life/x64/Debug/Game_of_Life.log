@@ -1,2 +1,66 @@
 ﻿  Source.c
-C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(5,9): fatal error C1083: Не удается открыть файл включение: stb_easy_font.h: No such file or directory,
+D:\Game_of_Life\Game_of_Life\Source.c(111,8): warning C4013: time: нет определения; предполагается "extern" с возвратом типа "int"
+D:\Game_of_Life\Game_of_Life\Source.c(127,44): warning C4133: =: несовместимые типы - из "int **" в "byte **"
+D:\Game_of_Life\Game_of_Life\Source.c(128,43): warning C4133: =: несовместимые типы - из "int **" в "byte **"
+D:\Game_of_Life\Game_of_Life\Source.c(134,46): warning C4133: =: несовместимые типы - из "int *" в "byte *"
+D:\Game_of_Life\Game_of_Life\Source.c(135,46): warning C4133: =: несовместимые типы - из "int *" в "byte *"
+D:\Game_of_Life\Game_of_Life\Source.c(126,9): warning C4101: j: неиспользованная локальная переменная
+D:\Game_of_Life\Game_of_Life\Source.c(515,14): warning C4133: =: несовместимые типы - из "byte **" в "int **"
+D:\Game_of_Life\Game_of_Life\Source.c(517,14): warning C4133: =: несовместимые типы - из "int **" в "byte **"
+D:\Game_of_Life\Game_of_Life\Source.c(797,2): error C4235: использовано нестандартное расширение: ключевое слово "__asm" данной архитектурой не поддерживается
+D:\Game_of_Life\Game_of_Life\Source.c(798,7): error C2065: mov: необъявленный идентификатор
+D:\Game_of_Life\Game_of_Life\Source.c(798,7): error C2146: синтаксическая ошибка: отсутствие ";" перед идентификатором "ax"
+D:\Game_of_Life\Game_of_Life\Source.c(798,9): error C2065: ax: необъявленный идентификатор
+D:\Game_of_Life\Game_of_Life\Source.c(799,3): error C2146: синтаксическая ошибка: отсутствие ";" перед идентификатором "sub"
+D:\Game_of_Life\Game_of_Life\Source.c(799,7): error C2065: sub: необъявленный идентификатор
+D:\Game_of_Life\Game_of_Life\Source.c(799,7): error C2146: синтаксическая ошибка: отсутствие ";" перед идентификатором "ax"
+D:\Game_of_Life\Game_of_Life\Source.c(799,9): error C2065: ax: необъявленный идентификатор
+D:\Game_of_Life\Game_of_Life\Source.c(800,3): error C2146: синтаксическая ошибка: отсутствие ";" перед идентификатором "mov"
+D:\Game_of_Life\Game_of_Life\Source.c(800,7): error C2065: mov: необъявленный идентификатор
+D:\Game_of_Life\Game_of_Life\Source.c(800,7): error C2146: синтаксическая ошибка: отсутствие ";" перед идентификатором "x"
+D:\Game_of_Life\Game_of_Life\Source.c(801,3): error C2065: ax: необъявленный идентификатор
+D:\Game_of_Life\Game_of_Life\Source.c(801,3): error C2146: синтаксическая ошибка: отсутствие ";" перед идентификатором "mov"
+D:\Game_of_Life\Game_of_Life\Source.c(801,7): error C2065: mov: необъявленный идентификатор
+D:\Game_of_Life\Game_of_Life\Source.c(801,7): error C2146: синтаксическая ошибка: отсутствие ";" перед идентификатором "ax"
+D:\Game_of_Life\Game_of_Life\Source.c(801,9): error C2065: ax: необъявленный идентификатор
+D:\Game_of_Life\Game_of_Life\Source.c(802,3): error C2146: синтаксическая ошибка: отсутствие ";" перед идентификатором "sub"
+D:\Game_of_Life\Game_of_Life\Source.c(802,7): error C2065: sub: необъявленный идентификатор
+D:\Game_of_Life\Game_of_Life\Source.c(802,7): error C2146: синтаксическая ошибка: отсутствие ";" перед идентификатором "ax"
+D:\Game_of_Life\Game_of_Life\Source.c(802,9): error C2065: ax: необъявленный идентификатор
+D:\Game_of_Life\Game_of_Life\Source.c(803,3): error C2146: синтаксическая ошибка: отсутствие ";" перед идентификатором "mov"
+D:\Game_of_Life\Game_of_Life\Source.c(803,7): error C2065: mov: необъявленный идентификатор
+D:\Game_of_Life\Game_of_Life\Source.c(803,7): error C2146: синтаксическая ошибка: отсутствие ";" перед идентификатором "y"
+D:\Game_of_Life\Game_of_Life\Source.c(804,2): error C2065: ax: необъявленный идентификатор
+D:\Game_of_Life\Game_of_Life\Source.c(804,2): error C2143: синтаксическая ошибка: отсутствие ";" перед "}"
+D:\Game_of_Life\Game_of_Life\Source.c(898,2): error C4235: использовано нестандартное расширение: ключевое слово "__asm" данной архитектурой не поддерживается
+D:\Game_of_Life\Game_of_Life\Source.c(899,7): error C2065: mov: необъявленный идентификатор
+D:\Game_of_Life\Game_of_Life\Source.c(899,7): error C2146: синтаксическая ошибка: отсутствие ";" перед идентификатором "ax"
+D:\Game_of_Life\Game_of_Life\Source.c(899,9): error C2065: ax: необъявленный идентификатор
+D:\Game_of_Life\Game_of_Life\Source.c(900,3): error C2146: синтаксическая ошибка: отсутствие ";" перед идентификатором "sub"
+D:\Game_of_Life\Game_of_Life\Source.c(900,7): error C2065: sub: необъявленный идентификатор
+D:\Game_of_Life\Game_of_Life\Source.c(900,7): error C2146: синтаксическая ошибка: отсутствие ";" перед идентификатором "ax"
+D:\Game_of_Life\Game_of_Life\Source.c(900,9): error C2065: ax: необъявленный идентификатор
+D:\Game_of_Life\Game_of_Life\Source.c(901,3): error C2146: синтаксическая ошибка: отсутствие ";" перед идентификатором "mov"
+D:\Game_of_Life\Game_of_Life\Source.c(901,7): error C2065: mov: необъявленный идентификатор
+D:\Game_of_Life\Game_of_Life\Source.c(901,7): error C2146: синтаксическая ошибка: отсутствие ";" перед идентификатором "x"
+D:\Game_of_Life\Game_of_Life\Source.c(902,3): error C2065: ax: необъявленный идентификатор
+D:\Game_of_Life\Game_of_Life\Source.c(902,3): error C2146: синтаксическая ошибка: отсутствие ";" перед идентификатором "mov"
+D:\Game_of_Life\Game_of_Life\Source.c(902,7): error C2065: mov: необъявленный идентификатор
+D:\Game_of_Life\Game_of_Life\Source.c(902,7): error C2146: синтаксическая ошибка: отсутствие ";" перед идентификатором "ax"
+D:\Game_of_Life\Game_of_Life\Source.c(902,9): error C2065: ax: необъявленный идентификатор
+D:\Game_of_Life\Game_of_Life\Source.c(903,3): error C2146: синтаксическая ошибка: отсутствие ";" перед идентификатором "sub"
+D:\Game_of_Life\Game_of_Life\Source.c(903,7): error C2065: sub: необъявленный идентификатор
+D:\Game_of_Life\Game_of_Life\Source.c(903,7): error C2146: синтаксическая ошибка: отсутствие ";" перед идентификатором "ax"
+D:\Game_of_Life\Game_of_Life\Source.c(903,9): error C2065: ax: необъявленный идентификатор
+D:\Game_of_Life\Game_of_Life\Source.c(904,3): error C2146: синтаксическая ошибка: отсутствие ";" перед идентификатором "mov"
+D:\Game_of_Life\Game_of_Life\Source.c(904,7): error C2065: mov: необъявленный идентификатор
+D:\Game_of_Life\Game_of_Life\Source.c(904,7): error C2146: синтаксическая ошибка: отсутствие ";" перед идентификатором "y"
+D:\Game_of_Life\Game_of_Life\Source.c(905,2): error C2065: ax: необъявленный идентификатор
+D:\Game_of_Life\Game_of_Life\Source.c(905,2): error C2143: синтаксическая ошибка: отсутствие ";" перед "}"
+D:\Game_of_Life\Game_of_Life\Source.c(930,26): warning C4113: "void (__cdecl *)()" отличается в списках параметров от "void (__cdecl *)(void)"
+D:\Game_of_Life\Game_of_Life\Source.c(948,26): warning C4113: "void (__cdecl *)()" отличается в списках параметров от "void (__cdecl *)(void)"
+D:\Game_of_Life\Game_of_Life\Source.c(965,31): warning C4113: "void (__cdecl *)()" отличается в списках параметров от "void (__cdecl *)(void)"
+D:\Game_of_Life\Game_of_Life\Source.c(1067,16): warning C4133: функция: несовместимые типы - из "char *" в "int *"
+D:\Game_of_Life\Game_of_Life\Source.c(1072,22): warning C4113: "void (__cdecl *)()" отличается в списках параметров от "void (__cdecl *)(void)"
+D:\Game_of_Life\Game_of_Life\Source.c(1074,36): warning C4113: "void (__cdecl *)(short,short)" отличается в списках параметров от "void (__cdecl *)(int,int)"
+D:\Game_of_Life\Game_of_Life\Source.c(1075,23): warning C4113: "void (__cdecl *)(int,int,short,short)" отличается в списках параметров от "void (__cdecl *)(int,int,int,int)"

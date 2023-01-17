@@ -1,17 +1,17 @@
 ﻿  Source.c
-C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(111,12): warning C4013: time: нет определения; предполагается "extern" с возвратом типа "int"
-C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(143,44): warning C4133: =: несовместимые типы - из "int **" в "byte **"
-C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(144,43): warning C4133: =: несовместимые типы - из "int **" в "byte **"
-C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(150,46): warning C4133: =: несовместимые типы - из "int *" в "byte *"
-C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(151,46): warning C4133: =: несовместимые типы - из "int *" в "byte *"
-C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(142,9): warning C4101: j: неиспользованная локальная переменная
-C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(524,14): warning C4133: =: несовместимые типы - из "byte **" в "int **"
-C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(526,14): warning C4133: =: несовместимые типы - из "int **" в "byte **"
-C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(924,26): warning C4113: "void (__cdecl *)()" отличается в списках параметров от "void (__cdecl *)(void)"
-C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(942,26): warning C4113: "void (__cdecl *)()" отличается в списках параметров от "void (__cdecl *)(void)"
-C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(959,31): warning C4113: "void (__cdecl *)()" отличается в списках параметров от "void (__cdecl *)(void)"
-C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(1061,16): warning C4133: функция: несовместимые типы - из "char *" в "int *"
-C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(1066,22): warning C4113: "void (__cdecl *)()" отличается в списках параметров от "void (__cdecl *)(void)"
+D:\Game_of_Life\Game_of_Life\Source.c(111,8): warning C4013: time: нет определения; предполагается "extern" с возвратом типа "int"
+D:\Game_of_Life\Game_of_Life\Source.c(143,44): warning C4133: =: несовместимые типы - из "int **" в "byte **"
+D:\Game_of_Life\Game_of_Life\Source.c(144,43): warning C4133: =: несовместимые типы - из "int **" в "byte **"
+D:\Game_of_Life\Game_of_Life\Source.c(150,46): warning C4133: =: несовместимые типы - из "int *" в "byte *"
+D:\Game_of_Life\Game_of_Life\Source.c(151,46): warning C4133: =: несовместимые типы - из "int *" в "byte *"
+D:\Game_of_Life\Game_of_Life\Source.c(142,9): warning C4101: j: неиспользованная локальная переменная
+D:\Game_of_Life\Game_of_Life\Source.c(530,14): warning C4133: =: несовместимые типы - из "byte **" в "int **"
+D:\Game_of_Life\Game_of_Life\Source.c(532,14): warning C4133: =: несовместимые типы - из "int **" в "byte **"
+D:\Game_of_Life\Game_of_Life\Source.c(939,26): warning C4113: "void (__cdecl *)()" отличается в списках параметров от "void (__cdecl *)(void)"
+D:\Game_of_Life\Game_of_Life\Source.c(957,26): warning C4113: "void (__cdecl *)()" отличается в списках параметров от "void (__cdecl *)(void)"
+D:\Game_of_Life\Game_of_Life\Source.c(974,31): warning C4113: "void (__cdecl *)()" отличается в списках параметров от "void (__cdecl *)(void)"
+D:\Game_of_Life\Game_of_Life\Source.c(1077,16): warning C4133: функция: несовместимые типы - из "char *" в "int *"
+D:\Game_of_Life\Game_of_Life\Source.c(1082,22): warning C4113: "void (__cdecl *)()" отличается в списках параметров от "void (__cdecl *)(void)"
 LINK : warning LNK4075: не учитывается "/INCREMENTAL" из-за спецификации "/PROFILE"
 Source.obj : warning LNK4075: не учитывается "/EDITANDCONTINUE" из-за спецификации "/OPT:REF"
-  Game_of_Life.vcxproj -> C:\Users\lanember\source\repos\Game_of_Life\Debug\Game_of_Life.exe
+  Game_of_Life.vcxproj -> D:\Game_of_Life\Debug\Game_of_Life.exe
