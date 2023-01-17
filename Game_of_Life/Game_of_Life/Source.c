@@ -112,17 +112,33 @@ void Auto_New_Game_B() {
 	A = (byte*)malloc(Xlen * Ylen * sizeof(byte));
 	if (A == NULL)
 		exit(0);
-	for (int i = 0; i < Xlen * Ylen; i++)
+	for (int i = 0; i < Xlen * Ylen; i+=8) {
 		A[i] = rand() % 2;
+		A[i + 1] = rand() % 2;
+		A[i + 2] = rand() % 2;
+		A[i + 3] = rand() % 2;
+		A[i + 4] = rand() % 2;
+		A[i + 5] = rand() % 2;
+		A[i + 6] = rand() % 2;
+		A[i + 7] = rand() % 2;
+		A[i + 8] = rand() % 2;
+		A[i + 9] = rand() % 2;
+		A[i + 10] = rand() % 2;
+		A[i + 11] = rand() % 2;
+		A[i + 12] = rand() % 2;
+		A[i + 13] = rand() % 2;
+		A[i + 14] = rand() % 2;
+		A[i + 15] = rand() % 2;
+	}
 	begin = 1;
 	glMatrixMode(GL_PROJECTION);
 	gluOrtho2D(0, Xwindow, Ywindow, 0);
-	glClearColor(0, 0, 0, 0);
+	//glClearColor(0, 0, 0, 0);
 }
 
 void Figure_New_Game() {
 	figure = 1;
-	srand(time(NULL));
+	//srand(time(NULL));
 	int i, j;
 	field1 = (int**)malloc(Xlen * sizeof(int));
 	field2 = (int**)calloc(Xlen, sizeof(int));
@@ -371,17 +387,17 @@ void Figure_New_Game() {
 
 	glMatrixMode(GL_PROJECTION);
 	gluOrtho2D(-1, Xwindow, Ywindow, -1);
-	glClearColor(0, 0, 0, 0);
+	//glClearColor(0, 0, 0, 0);
 }
 
 void User_New_Game_B() {
-	srand(time(NULL));
+	//srand(time(NULL));
 	A = (byte*)calloc(Xlen * Ylen, sizeof(byte));
 	if (A == NULL)
 		exit(0);
 	glMatrixMode(GL_PROJECTION);
 	gluOrtho2D(0, Xwindow, Ywindow, 0);
-	glClearColor(0, 0, 0, 0);
+	//glClearColor(0, 0, 0, 0);
 }
 
 char Game_Rule(int x, int y) {
@@ -395,7 +411,7 @@ char Game_Rule(int x, int y) {
 
 
 void Draw_B() {
-	glClear(GL_COLOR_BUFFER_BIT);
+	//glClear(GL_COLOR_BUFFER_BIT);
 	for (int i = 0; i < Xlen * Ylen; i++) {
 		if (A[i])
 			glColor3f(rand() % 2, rand() % 2, rand() % 2);
@@ -407,31 +423,21 @@ void Draw_B() {
 		glEnd();
 	}
 
-	int i = 0, j = 0, k = 1;
-	if (pixel_raz == 10) {
-		i = 6; k = 1; j = 6;
+	int i, j;
+	i = j = 3;
+	glColor3f(0.2, 0.2, 0.2);
+	glLineWidth(0.2);
+	for (i; i <= Xwindow; i += pixel_raz) {
+		glBegin(GL_LINES);
+		glVertex2f(i, 0);
+		glVertex2f(i, Ywindow);
+		glEnd();
 	}
-	if (pixel_raz == 5) {
-		i = 3; k = 1.1; j = 3;
-	}
-	if (pixel_raz == 5 || pixel_raz == 10) {
-
-		for (i; i <= Xwindow; i += pixel_raz * k) {
-			glColor3f(0.2, 0.2, 0.2);
-			glLineWidth(0.2);
-			glBegin(GL_LINES);
-			glVertex2f(i, 0);
-			glVertex2f(i, Ywindow);
-			glEnd();
-		}
-		for (j; j <= Ywindow; j += pixel_raz * k) {
-			glColor3f(0.2, 0.2, 0.2);
-			glLineWidth(0.2);
-			glBegin(GL_LINES);
-			glVertex2f(0, j);
-			glVertex2f(Xwindow, j);
-			glEnd();
-		}
+	for (j; j <= Ywindow; j += pixel_raz) {
+		glBegin(GL_LINES);
+		glVertex2f(0, j);
+		glVertex2f(Xwindow, j);
+		glEnd();
 	}
 	if (begin) {
 		struct p* mass = (struct p*)malloc(Xlen * Ylen * sizeof(struct p));
@@ -465,6 +471,7 @@ void Draw_B() {
 }
 
 void Figure_Draw() {
+	glPointSize(pixel_raz);
 	for (int i = 1; i < Xlen; i++)
 		for (int j = 1; j < Ylen; j++)
 		{
@@ -472,40 +479,37 @@ void Figure_Draw() {
 				glColor3f(rand() % 2, rand() % 2, rand() % 2);
 			else
 				glColor3f(0, 0, 0);
-			glPointSize(pixel_raz);
+			
 			glBegin(GL_POINTS);
 			glVertex2f(i * pixel_raz, j * pixel_raz);
 			glEnd();
 		}
-	int i = 0, j = 0, k = 1;
-	if (pixel_raz == 10) {
-		i = 6; k = 1; j = 6;
+	int i, j;
+	i = j = 3;
+	for (i; i <= Xwindow; i += pixel_raz) {
+		glColor3f(0.2, 0.2, 0.2);
+		glLineWidth(0.2);
+		glBegin(GL_LINES);
+		glVertex2f(i, 0);
+		glVertex2f(i, Ywindow);
+		glEnd();
 	}
-	if (pixel_raz == 5) {
-		i = 3; k = 1.1; j = 3;
-	}
-	if (pixel_raz == 5 || pixel_raz == 10) {
-		for (i; i <= Xwindow; i += pixel_raz * k) {
-			glColor3f(0.2, 0.2, 0.2);
-			glLineWidth(0.2);
-			glBegin(GL_LINES);
-			glVertex2f(i, 0);
-			glVertex2f(i, Ywindow);
-			glEnd();
-		}
-		for (j; j <= Ywindow; j += pixel_raz * k) {
-			glColor3f(0.2, 0.2, 0.2);
-			glLineWidth(0.2);
-			glBegin(GL_LINES);
-			glVertex2f(0, j);
-			glVertex2f(Xwindow, j);
-			glEnd();
-		}
+	for (j; j <= Ywindow; j += pixel_raz) {
+		glColor3f(0.2, 0.2, 0.2);
+		glLineWidth(0.2);
+		glBegin(GL_LINES);
+		glVertex2f(0, j);
+		glVertex2f(Xwindow, j);
+		glEnd();
 	}
 	if (begin) {
-		for (int i = 1; i < Xlen-1; i++)
-			for (int j = 1; j < Ylen-1; j++)
+		for (int i = 1; i < Xlen - 1; i+=4)
+			for (int j = 1; j < Ylen - 1; j++) {
 				field2[i][j] = Game_Rule(i, j);
+				field2[i][j+1] = Game_Rule(i, j);
+				field2[i][j+2] = Game_Rule(i, j);
+				field2[i][j+3] = Game_Rule(i, j);
+			}
 	}
 	glutSwapBuffers();
 }
@@ -668,7 +672,7 @@ void Menu() {
 		glColor3f(0, 1, 0);
 	Quads(-126, -7, -68, 2);
 	glColor3f(1, 0, 0);
-	num_quads = stb_easy_font_print(-125, -30, " 1550x800\n 1024x768\n 800x600 ", NULL, buffer, sizeof(buffer));
+	num_quads = stb_easy_font_print(-125, -30, " 1530x800\n 1000x760\n 800x600 ", NULL, buffer, sizeof(buffer));
 	glDrawArrays(GL_QUADS, 0, num_quads * 4);
 	glColor3f(0.5, 0.5, 0.5);
 	if (user) {
@@ -963,8 +967,8 @@ void Сhoice(int btn, int state, int x, int y) {
 			else if ((!user_set_yell[1] || !user_set_yell[2]) && (x > -190 && x < -102))
 				user_set_yell[0] = 0;
 			if (x > -190 && x<-102 && y>-28 && y < -15) {
-				Xwindow = 1024;
-				Ywindow = 768;
+				Xwindow = 1000;
+				Ywindow = 760;
 				user_set_yell[1] = 1;
 			}
 			else if ((!user_set_yell[0] || !user_set_yell[2]) && (x > -190 && x < -102))

@@ -1,21 +1,2 @@
-﻿Source.obj : error LNK2019: ссылка на неразрешенный внешний символ glutInit в функции main.
-Source.obj : error LNK2019: ссылка на неразрешенный внешний символ glutInitDisplayMode в функции main.
-Source.obj : error LNK2019: ссылка на неразрешенный внешний символ glutInitWindowPosition в функции main.
-Source.obj : error LNK2019: ссылка на неразрешенный внешний символ glutInitWindowSize в функции main.
-Source.obj : error LNK2019: ссылка на неразрешенный внешний символ glutMainLoop в функции main.
-Source.obj : error LNK2019: ссылка на неразрешенный внешний символ glutCreateWindow в функции main.
-Source.obj : error LNK2019: ссылка на неразрешенный внешний символ glutDestroyWindow в функции Сhoice.
-Source.obj : error LNK2019: ссылка на неразрешенный внешний символ glutPostRedisplay в функции Botton_color.
-Source.obj : error LNK2019: ссылка на неразрешенный внешний символ glutSwapBuffers в функции Auto_Draw.
-Source.obj : error LNK2019: ссылка на неразрешенный внешний символ glutReshapeWindow в функции Reshape.
-Source.obj : error LNK2019: ссылка на неразрешенный внешний символ glutDisplayFunc в функции main.
-Source.obj : error LNK2019: ссылка на неразрешенный внешний символ glutReshapeFunc в функции main.
-Source.obj : error LNK2019: ссылка на неразрешенный внешний символ glutKeyboardFunc в функции Сhoice.
-Source.obj : error LNK2019: ссылка на неразрешенный внешний символ glutMouseFunc в функции main.
-Source.obj : error LNK2019: ссылка на неразрешенный внешний символ glutMotionFunc в функции Сhoice.
-Source.obj : error LNK2019: ссылка на неразрешенный внешний символ glutPassiveMotionFunc в функции main.
-Source.obj : error LNK2019: ссылка на неразрешенный внешний символ glutTimerFunc в функции Auto_Timer.
-Source.obj : error LNK2019: ссылка на неразрешенный внешний символ glutSpecialFunc в функции Сhoice.
-Source.obj : error LNK2019: ссылка на неразрешенный внешний символ glutGet в функции Reshape.
-glut32.lib : warning LNK4272: тип компьютера библиотеки "x86" конфликтует с типом целевого компьютера "x64"
-C:\Users\Егор\source\repos\Game_of_Life\x64\Debug\Game_of_Life.exe : fatal error LNK1120: неразрешенных внешних элементов: 19
+﻿  Source.c
+C:\Users\lanember\source\repos\Game_of_Life\Game_of_Life\Source.c(5,9): fatal error C1083: Не удается открыть файл включение: stb_easy_font.h: No such file or directory,
